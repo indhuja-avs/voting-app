@@ -6,6 +6,7 @@ const Login = () => {
   const [userName, setUserName] = useState('');
   const [shouldVote, setShouldVote] = useState(null);
 
+
   const handleLogin = () => {
 
     // Replace 'your-api-endpoint' with the actual endpoint you want to send the username to
@@ -23,18 +24,14 @@ const Login = () => {
     .then(result => {
       // Handle the response from the server as needed
       console.log(result);
-      setShouldVote(result.shouldVote);
+      setShouldVote(result);
     })
     .catch(error => {
       // Handle any errors that occurred during the fetch
       console.error('Error:', error);
     });
   };
-
-  const handleRegisterSuccess = () => {
-    setShouldVote(true); // Set shouldVote to true after successful registration
-  };
-
+  
   return (
     <div>
       {shouldVote === null ? (
@@ -50,10 +47,10 @@ const Login = () => {
           <br></br>
           <button onClick={handleLogin}>Login</button>
         </div>
-      ) : shouldVote ? (
-        <Vote userName={userName}/>
+      ) : shouldVote.shouldVote ? (
+        <Vote userName={shouldVote.userName} firstName={shouldVote.firstName} lastName={shouldVote.lastName}/>
       ) : (
-        <Register onRegister={handleRegisterSuccess} />
+        <Register/>
       )}
     </div>
   );

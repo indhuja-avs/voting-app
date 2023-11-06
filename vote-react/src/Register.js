@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import Vote from './Vote';
 
-const Register = ({ onRegister }) => {
+const Register = () => {
   const [userName, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  // const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [shouldVote, setShouldVote] = useState(false);
+  // const [shouldVote, setShouldVote] = useState(false);
 
   const handleRegister = () => {
 
@@ -25,23 +25,23 @@ const Register = ({ onRegister }) => {
     })
     .then(response => response.json())
     .then(result => {
-      // Handle the response from the server as needed
       console.log(result);
-      setShouldVote(result.shouldVote);
+      if(result.shouldVote){
+        setErrorMessage('success');
+      }
+      else{
+        setErrorMessage('error!!');
+      }
     })
     .catch(error => {
       // Handle any errors that occurred during the fetch
       console.error('Error:', error);
     });
-
-    // Call the onSubmit function passed from the parent component (Login)
-    console.log('Registering user:', { userName, firstName, lastName });
-    setRegistrationSuccess(true);
-    setErrorMessage('');
-
-    // Call the onRegister function passed from the parent component
-    onRegister();
   };
+
+  if (errorMessage === 'success') {
+    return <Vote userName={userName} firstName={firstName} lastName={lastName}/>;
+  }
 
   const handleUsernameChange = (e) => {
     // Handle username change if needed
@@ -58,16 +58,18 @@ const Register = ({ onRegister }) => {
     setLastName(e.target.value);
   };
 
-  if (registrationSuccess) {
-    // If registration is successful, render the Vote component
-    if(shouldVote){
-      return <Vote userName={userName}/>;
-    }
-    else{
-      setErrorMessage('error!!');
-      return;
-    }
-  }
+  // if (registrationSuccess) {
+  //   setRegistrationSuccess(false)
+  //   console.log(shouldVote);
+  //   // If registration is successful, render the Vote component
+  //   if(shouldVote){
+  //     return <Vote userName={userName}/>;
+  //   }
+  //   else{
+  //     setErrorMessage('error!!');
+  //     return;
+  //   }
+  // }
 
   return (
     <div>

@@ -39,14 +39,20 @@ def login():
     results = list(cur) 
     # Checking the cursor is empty 
     # or not 
+    
     if len(results)==0: 
         return jsonify(
         shouldVote=False,
         message="User does not exist",
         re=data
     )
+    
     else: 
+        result = results[0]
         return jsonify(
+        userName=result['username'],
+        firstName=result['firstname'],
+        lastName=result['lastname'],
         shouldVote=True,
         message="User exist"
     )
@@ -54,14 +60,22 @@ def login():
 @application.route('/register', methods = ['POST'])
 def register():
     data = request.form
-    cur = db.user.find({'username':data.get('userName', 'sum')})
+    username=data.get('userName', '')
+    firstname=data.get('firstName', '')
+    lastname=data.get('lastName', '')
+    cur = db.user.find({'username':username})
     results = list(cur) 
+    
     if len(results)>0:
         return jsonify(
         shouldVote=False,
         message="User already exists")
-    db.user.insert_one({'username':data.get('userName', ''), 'firstname:' : data.get('firstName', ''), 'lastname:' : data.get('lastName', '')})
+
+    db.user.insert_one({'username':username, 'firstname' : firstname, 'lastname' : lastname})
     return jsonify(
+        userName=username,
+        firstName=firstname,
+        lastName=lastname,
         shouldVote=True,
         message='User Registered'
     )
