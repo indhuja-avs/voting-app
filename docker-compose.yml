@@ -1,6 +1,7 @@
 # version is now using "compose spec"
 # v2 and v3 are now combined!
 # docker-compose v1.27+ required
+version: "3"
 
 services:
   vote-react:
@@ -8,14 +9,7 @@ services:
       context: ./vote-react
       dockerfile: Dockerfile
     depends_on:
-      redis:
-        condition: service_healthy
-    healthcheck: 
-      test: ["CMD", "curl", "-f", "http://localhost"]
-      interval: 15s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
+      - redis
     volumes:
       - reactdata:/app
     ports:
@@ -92,8 +86,7 @@ services:
     # use nodemon rather than node for local dev
     entrypoint: nodemon --inspect=0.0.0.0 server.js
     depends_on:
-      db:
-        condition: service_healthy 
+      - db 
     volumes:
       - ./result:/usr/local/app
     ports:
@@ -104,13 +97,12 @@ services:
       - backend
 
   worker:
-    build:
+    build: 
       context: ./worker
+      dockerfile: Dockerfile
     depends_on:
-      redis:
-        condition: service_healthy 
-      db:
-        condition: service_healthy 
+      - redis
+      - db
     networks:
       - backend
 
@@ -118,9 +110,6 @@ services:
     image: redis:alpine
     volumes:
       - "./healthchecks:/healthchecks"
-    healthcheck:
-      test: /healthchecks/redis.sh
-      interval: "5s"
     networks:
       - backend
 
@@ -132,9 +121,6 @@ services:
     volumes:
       - "db-data:/var/lib/postgresql/data"
       - "./healthchecks:/healthchecks"
-    healthcheck:
-      test: /healthchecks/postgres.sh
-      interval: "5s"
     networks:
       - backend
  

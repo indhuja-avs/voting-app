@@ -5,7 +5,7 @@ const Vote = (props) => {
     let { userName, firstName, lastName } = props;
     const handleOption = (option) => {
 
-    const endpoint = 'http://localhost:80/vote';
+    const endpoint = 'http://ec2-3-82-19-144.compute-1.amazonaws.com:80/vote';
 
     // Assuming the server expects JSON data in the request body
     const data = new FormData();

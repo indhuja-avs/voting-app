@@ -10,7 +10,7 @@ const Login = () => {
   const handleLogin = () => {
 
     // Replace 'your-api-endpoint' with the actual endpoint you want to send the username to
-    const endpoint = 'http://localhost:80/login';
+    const endpoint = 'http://ec2-3-82-19-144.compute-1.amazonaws.com:80/login';
 
     // Assuming the server expects JSON data in the request body
     const data = new FormData();
@@ -45,7 +45,7 @@ const Login = () => {
             />
           </label>
           <br></br>
-          <button onClick={handleLogin}>Login</button>
+          <button onClick={handleLogin}>Log</button>
         </div>
       ) : shouldVote.shouldVote ? (
         <Vote userName={shouldVote.userName} firstName={shouldVote.firstName} lastName={shouldVote.lastName}/>

@@ -11,7 +11,7 @@ const Register = () => {
 
   const handleRegister = () => {
 
-    const endpoint = 'http://localhost:80/register';
+    const endpoint = 'http://ec2-3-82-19-144.compute-1.amazonaws.com:80/register';
 
     // Assuming the server expects JSON data in the request body
     const data = new FormData();
