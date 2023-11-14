@@ -9,7 +9,8 @@ services:
       context: ./vote-react
       dockerfile: Dockerfile
     depends_on:
-      - redis
+      - flask
+      - webserver
     volumes:
       - reactdata:/app
     ports:
@@ -22,7 +23,7 @@ services:
 
   flask:
     build:
-      context: ./app
+      context: ./vote-backend
       dockerfile: Dockerfile
     container_name: flask
     image: digitalocean.com/flask-python:3.6
@@ -39,6 +40,7 @@ services:
       - appdata:/var/www
     depends_on:
       - mongodb
+      - redis
     networks:
       - frontend
       - backend

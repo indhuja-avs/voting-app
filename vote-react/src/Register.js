@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import Vote from './Vote';
+import "./styles.css";
 
 const Register = () => {
   const [userName, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  // const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  // const [shouldVote, setShouldVote] = useState(false);
 
   const handleRegister = () => {
 
-    const endpoint = 'http://ec2-3-82-19-144.compute-1.amazonaws.com:80/register';
+    const endpoint = 'http://ec2-54-87-150-40.compute-1.amazonaws.com:80/register';
 
     // Assuming the server expects JSON data in the request body
     const data = new FormData();
@@ -44,35 +43,19 @@ const Register = () => {
   }
 
   const handleUsernameChange = (e) => {
-    // Handle username change if needed
     setUsername(e.target.value);
   };
 
   const handleFirstNameChange = (e) => {
-    // Handle first name change if needed
     setFirstName(e.target.value);
   };
 
   const handleLastNameChange = (e) => {
-    // Handle last name change if needed
     setLastName(e.target.value);
   };
 
-  // if (registrationSuccess) {
-  //   setRegistrationSuccess(false)
-  //   console.log(shouldVote);
-  //   // If registration is successful, render the Vote component
-  //   if(shouldVote){
-  //     return <Vote userName={userName}/>;
-  //   }
-  //   else{
-  //     setErrorMessage('error!!');
-  //     return;
-  //   }
-  // }
-
   return (
-    <div>
+    <div id='content-form'>
       <h2>Register</h2>
       {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
       <label>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Register from './Register';
 import Vote from './Vote';
+import "./styles.css";
 
 const Login = () => {
   const [userName, setUserName] = useState('');
@@ -10,7 +11,7 @@ const Login = () => {
   const handleLogin = () => {
 
     // Replace 'your-api-endpoint' with the actual endpoint you want to send the username to
-    const endpoint = 'http://ec2-3-82-19-144.compute-1.amazonaws.com:80/login';
+    const endpoint = 'http://ec2-54-87-150-40.compute-1.amazonaws.com:80/login';
 
     // Assuming the server expects JSON data in the request body
     const data = new FormData();
@@ -33,11 +34,13 @@ const Login = () => {
   };
   
   return (
-    <div>
+    <div id='content-container'>
       {shouldVote === null ? (
-        <div>
+        <div id='content-form'>
+          <h2>Welcome to the Voting App!</h2>
           <label>
-            Username:
+            Enter Username
+            <br></br>
             <input
               type="text"
               value={userName}
@@ -45,7 +48,7 @@ const Login = () => {
             />
           </label>
           <br></br>
-          <button onClick={handleLogin}>Log</button>
+          <button onClick={handleLogin}>Login</button>
         </div>
       ) : shouldVote.shouldVote ? (
         <Vote userName={shouldVote.userName} firstName={shouldVote.firstName} lastName={shouldVote.lastName}/>

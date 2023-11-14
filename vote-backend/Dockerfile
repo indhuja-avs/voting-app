@@ -1,31 +1,21 @@
-FROM ubuntu:16.04
+FROM python:3.6.8-alpine3.9
 
-#==================
-# General Packages
-#==================
-RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
-    supervisor \
-    nginx \
- && rm -rf /var/lib/apt/lists/*
+LABEL MAINTAINER="Indhuja Sivasamy <iv0006@uah.edu>"
 
-#======================
-# Install dependencies
-#======================
-COPY requirements.txt /tmp/
-RUN pip3 install -r /tmp/requirements.txt
+ENV GROUP_ID=1000 \
+    USER_ID=1000
 
-#=============
-# Expose Port
-#=============
-EXPOSE 80
+WORKDIR /var/www/
 
-#=========
-# Run app
-#=========
-WORKDIR /opt
-COPY nginx/nginx.conf /etc/nginx/
-COPY . /opt/
-ENV LOG_PATH=/var/log/supervisor
-CMD /usr/bin/supervisord --configuration supervisord.conf
+ADD . /var/www/
+RUN pip install -r requirements.txt
+RUN pip install gunicorn
+
+RUN addgroup -g $GROUP_ID www
+RUN adduser -D -u $USER_ID -G www www -s /bin/sh
+
+USER www
+
+EXPOSE 5000
+
+CMD [ "gunicorn", "-w", "4", "--reload", "--bind", "0.0.0.0:5000", "wsgi"]

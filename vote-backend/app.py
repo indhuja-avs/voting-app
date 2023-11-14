@@ -21,21 +21,14 @@ def get_redis():
 def index():
     return jsonify(
         status=True,
-        message='Welcome to theFlask MongoDB app!'
-    )
-
-@application.route('/wow')
-def wow():
-    return jsonify(
-        status=True,
-        message='Welcome to theFlask MongoDB app!'
+        message='Welcome to voting-app backend!'
     )
 
 @application.route('/login', methods = ['POST'])
 def login():
     data = request.form
     print(data)
-    cur = db.user.find({'username':data.get('userName', 'sum')})
+    cur = db.user.find({'username':data.get('userName')})
     results = list(cur) 
     # Checking the cursor is empty 
     # or not 
@@ -86,11 +79,11 @@ def vote():
     data = request.form
     print(data)
     option = data.get('option', 'a')
-    data = json.dumps({'voter_id': data.get('userName', 'sum'), 'vote': option})
+    data = json.dumps({'voter_id': data.get('userName'), 'vote': option})
     st = redis.rpush('votes', data)
     return jsonify(
         isVoted=True,
-        message='Wow!',
+        message='You have voted!',
         dat=data,
         stt=st
     )
